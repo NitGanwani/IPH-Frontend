@@ -7,13 +7,19 @@ import {
 } from 'react-bootstrap';
 import NavbarCollapse from 'react-bootstrap/esm/NavbarCollapse';
 import NavbarToggle from 'react-bootstrap/esm/NavbarToggle';
-import { FaUser } from 'react-icons/fa';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useUsers } from '../../hooks/use.users';
 import logo from '../../../../src/assets/logo.png';
+import { useNavigate } from 'react-router-dom';
 
 export function Header() {
   const { loggedUser, logout } = useUsers();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   return (
     <header>
@@ -27,17 +33,12 @@ export function Header() {
           <NavbarToggle aria-controls="basic-navbar-nav"></NavbarToggle>
           <NavbarCollapse id="basic-navbar-nav">
             <Nav className="ms-auto">
-              {loggedUser ? (
+              {loggedUser && (
                 <NavDropdown title={loggedUser.name} id="username">
-                  <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
+                  <NavDropdown.Item onClick={handleLogout}>
+                    Logout
+                  </NavDropdown.Item>
                 </NavDropdown>
-              ) : (
-                <LinkContainer to="/login">
-                  <Nav.Link>
-                    <FaUser />
-                    Sign In
-                  </Nav.Link>
-                </LinkContainer>
               )}
               {loggedUser && loggedUser.role === 'Admin' && (
                 <NavDropdown title="Admin" id="adminmenu">

@@ -4,7 +4,7 @@ import { LoginResponse } from '../types/login.response';
 import { UserRepository } from '../../core/services/users/user.repository';
 import { LocalStorage } from '../../core/services/local.storage';
 
-type LoginState = 'idle' | 'logging' | 'error';
+type LoginState = 'idle' | 'logging' | 'error' | 'success';
 
 export type UsersState = {
   loggedUser: User | null;
@@ -38,6 +38,7 @@ const usersSlice = createSlice({
     logout: (state: UsersState) => {
       state.loggedUser = null;
       state.token = '';
+      state.loginLoadState = 'idle';
       return state;
     },
   },
@@ -49,6 +50,7 @@ const usersSlice = createSlice({
     builder.addCase(loginUserAsync.fulfilled, (state, { payload }) => {
       state.loggedUser = payload.user;
       state.token = payload.token;
+      state.loginLoadState = 'success';
     });
     builder.addCase(loginUserAsync.rejected, (state) => {
       state.loginLoadState = 'error';

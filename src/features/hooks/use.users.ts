@@ -19,14 +19,6 @@ export function useUsers() {
     dispatch(loginUserAsync({ loginUser, repo, userStore }));
   };
 
-  // const loginWithToken = () => {
-  //   const userStoreData = userStore.get();
-  //   if (userStoreData) {
-  //     const token = userStoreData.token;
-  //     dispatch(loginTokenThunk({ token, repo, userStore }));
-  //   }
-  // };
-
   const logout = () => {
     dispatch(ac.logout());
     userStore.remove();

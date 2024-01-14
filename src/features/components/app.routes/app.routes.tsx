@@ -2,11 +2,13 @@ import { Suspense, lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 
 const Login = lazy(() => import('../login/login'));
+const Home = lazy(() => import('../home/home'));
 
 export function AppRoutes() {
   return (
     <Suspense>
       <Routes>
+        <Route path="/" element={<Home></Home>}></Route>
         <Route path="/login" element={<Login></Login>}></Route>
       </Routes>
     </Suspense>

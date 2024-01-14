@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 export function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
   const navigate = useNavigate();
 
   const { login, loginLoadState } = useUsers();
@@ -22,7 +23,6 @@ export function Login() {
         .value,
     };
     await login(loginUSer);
-
     element.reset();
   };
 
@@ -43,7 +43,7 @@ export function Login() {
       });
       return;
     }
-    if (loginLoadState === 'logging') {
+    if (loginLoadState === 'success') {
       Swal.fire({
         width: '20em',
         icon: 'success',
