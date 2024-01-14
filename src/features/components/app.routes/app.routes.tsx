@@ -1,10 +1,14 @@
-import { Suspense } from 'react';
-import { Routes } from 'react-router-dom';
+import { Suspense, lazy } from 'react';
+import { Route, Routes } from 'react-router-dom';
+
+const Login = lazy(() => import('../login/login'));
 
 export function AppRoutes() {
   return (
     <Suspense>
-      <Routes></Routes>
+      <Routes>
+        <Route path="/login" element={<Login></Login>}></Route>
+      </Routes>
     </Suspense>
   );
 }

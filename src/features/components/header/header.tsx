@@ -10,16 +10,19 @@ import NavbarToggle from 'react-bootstrap/esm/NavbarToggle';
 import { FaUser } from 'react-icons/fa';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useUsers } from '../../hooks/use.users';
+import logo from '../../../../src/assets/logo.png';
 
 export function Header() {
   const { loggedUser, logout } = useUsers();
 
   return (
     <header>
-      <Navbar bg="primary" variant="dark" expand="md" collapseOnSelect>
+      <Navbar bg="dark" variant="dark" expand="md" collapseOnSelect>
         <Container>
           <LinkContainer to="/">
-            <NavbarBrand>IPH</NavbarBrand>
+            <NavbarBrand>
+              <img src={logo} alt="iph-logo" width={100} height={75} />
+            </NavbarBrand>
           </LinkContainer>
           <NavbarToggle aria-controls="basic-navbar-nav"></NavbarToggle>
           <NavbarCollapse id="basic-navbar-nav">
