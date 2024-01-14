@@ -45,11 +45,14 @@ export function Header() {
                   <LinkContainer to="/admin/userList">
                     <NavDropdown.Item>Users</NavDropdown.Item>
                   </LinkContainer>
-                  <LinkContainer to="/admin/productslist">
-                    <NavDropdown.Item>Products</NavDropdown.Item>
+                  <LinkContainer to="/admin/terminals">
+                    <NavDropdown.Item>Terminals</NavDropdown.Item>
                   </LinkContainer>
-                  <LinkContainer to="/admin/orderlist">
-                    <NavDropdown.Item>Orders</NavDropdown.Item>
+                  <LinkContainer to="/admin/groups">
+                    <NavDropdown.Item>Groups</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/admin/groups">
+                    <NavDropdown.Item>Groups</NavDropdown.Item>
                   </LinkContainer>
                 </NavDropdown>
               )}
