@@ -7,7 +7,9 @@ import { ac, loginUserAsync } from '../redux/users.slice';
 import { LoginUser } from '../models/user';
 
 export function useUsers() {
-  const { loggedUser } = useSelector((state: RootState) => state.users);
+  const { loggedUser, loginLoadState } = useSelector(
+    (state: RootState) => state.users
+  );
 
   const dispatch = useDispatch<AppDispatch>();
   const repo = new UserRepository(url);
@@ -34,5 +36,6 @@ export function useUsers() {
     login,
     logout,
     loggedUser,
+    loginLoadState,
   };
 }

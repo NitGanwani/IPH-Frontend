@@ -1,43 +1,66 @@
 import { SyntheticEvent, useEffect, useState } from 'react';
 import FormContainer from '../form/form';
 import { Form, Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
 import { useUsers } from '../../hooks/use.users';
 import Swal from 'sweetalert2';
+import { LoginUser } from '../../models/user';
+import { useNavigate } from 'react-router-dom';
 
 export function Login() {
-  const [hasLogin, setHasLogin] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const { login } = useUsers();
+  const { login, loginLoadState } = useUsers();
 
-  const handleSubmit = (event: SyntheticEvent) => {
+  const handleSubmit = async (event: SyntheticEvent) => {
     event.preventDefault();
     const element = event.target as HTMLFormElement;
-    const loggedUser = {
+    const loginUSer: LoginUser = {
       email: (element.elements.namedItem('email') as HTMLInputElement).value,
       password: (element.elements.namedItem('password') as HTMLInputElement)
         .value,
     };
-    login(loggedUser);
+    await login(loginUSer);
+
+    element.reset();
   };
 
   useEffect(() => {
-    if (hasLogin) {
+    if (loginLoadState === 'error') {
       Swal.fire({
-        icon: 'success',
-        title: '¡Login correcto!',
+        width: '20em',
+        icon: 'error',
+        title: 'ERROR',
+        text: 'INVALID USERNAME OR PASSWORD',
+        background:
+          'linear-gradient(to right, rgba(20, 20, 20), rgba(0, 0, 0))',
+        color: 'white',
+        iconColor: 'red',
         showConfirmButton: false,
-        timer: 1500,
-        width: 350,
+        padding: '4em 0',
+        timer: 2000,
+      });
+      return;
+    }
+    if (loginLoadState === 'logging') {
+      Swal.fire({
+        width: '20em',
+        icon: 'success',
+        title: 'LOGIN SUCCESS!',
+        text: 'Redirecting to the dashboard',
+        background:
+          'linear-gradient(to right, rgba(20, 20, 20), rgba(0, 0, 0))',
+        color: 'white',
+        iconColor: 'green',
+        showConfirmButton: false,
+        padding: '4em 0',
+        timer: 2000,
       }).then(() => {
-        setHasLogin(false);
-        navigate('/home/');
+        navigate('/login');
       });
     }
-  }, [hasLogin]);
+  }, [loginLoadState, navigate]);
 
   return (
     <FormContainer>
@@ -61,7 +84,7 @@ export function Login() {
             onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
-        <Button type="submit" variant="primary" className="mt-2">
+        <Button type="submit" variant="dark" className="mt-2">
           Sign In
         </Button>
       </Form>
