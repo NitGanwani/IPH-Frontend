@@ -1,7 +1,7 @@
 import { Terminal } from '../../../features/models/terminal';
 
 export class TerminalRepository {
-  constructor(public url: string) {
+  constructor(public url: string, public token: string) {
     this.url += 'terminals';
   }
 
@@ -13,5 +13,29 @@ export class TerminalRepository {
     }
     const answer = await response.json();
     return answer;
+  }
+
+  async create(newTerminal: FormData): Promise<Terminal> {
+    const response = await fetch(this.url, {
+      method: 'POST',
+      body: newTerminal,
+      headers: {
+        Authorization: 'Bearer ' + this.token,
+      },
+    });
+    if (!response.ok)
+      throw new Error(response.status + ' ' + response.statusText);
+    return response.json();
+  }
+
+  async update(id: Terminal['id'], item: FormData): Promise<Terminal> {
+    const response = await fetch(this.url + id, {
+      method: 'PATCH',
+      body: item,
+      headers: { Authorization: 'Bearer ' + this.token },
+    });
+    const updatedFilm = await response.json();
+
+    return updatedFilm as Terminal;
   }
 }
