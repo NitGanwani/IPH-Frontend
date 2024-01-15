@@ -5,6 +5,7 @@ import { url } from '../../config';
 import { useCallback } from 'react';
 import {
   createTerminalAsync,
+  deleteTerminalAsync,
   loadTerminalsAsync,
   updateTerminalAsync,
 } from '../redux/terminals.slice';
@@ -32,10 +33,15 @@ export function useTerminals() {
     await dispatch(updateTerminalAsync({ repo, id, terminal }));
   };
 
+  const handleDeleteTerminal = async (id: Terminal['id']) => {
+    await dispatch(deleteTerminalAsync({ repo, id }));
+  };
+
   return {
     handleLoadTerminals,
     terminals,
     handleCreateTerminal,
     handleUpdateTerminal,
+    handleDeleteTerminal,
   };
 }

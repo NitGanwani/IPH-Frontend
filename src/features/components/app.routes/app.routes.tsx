@@ -14,7 +14,11 @@ export function AppRoutes() {
         <Route path="/login" element={<Login></Login>}></Route>
         <Route path="/dashboard" element={<Dashboard></Dashboard>}></Route>
         <Route
-          path="/terminal-form"
+          path="/create-terminal"
+          element={<TerminalForm></TerminalForm>}
+        ></Route>
+        <Route
+          path="/create-terminal/:id"
           element={<TerminalForm></TerminalForm>}
         ></Route>
       </Routes>

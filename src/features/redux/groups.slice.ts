@@ -11,7 +11,7 @@ const initialState: GroupsState = {
 };
 
 export const loadGroupsAsync = createAsyncThunk<Group[], GetGroupPayload>(
-  'load',
+  'groups/load',
   async ({ repo }) => {
     const groups = await repo.getAll();
     return groups;

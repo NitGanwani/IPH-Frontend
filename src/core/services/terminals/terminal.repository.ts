@@ -29,8 +29,10 @@ export class TerminalRepository {
         Authorization: 'Bearer ' + this.token,
       },
     });
-    if (!response.ok)
-      throw new Error(response.status + ' ' + response.statusText);
+    if (!response.ok) {
+      const message = `Error: ${response.status}. ${response.statusText}`;
+      throw new Error(message);
+    }
     return response.json();
   }
 
@@ -40,8 +42,25 @@ export class TerminalRepository {
       body: item,
       headers: { Authorization: 'Bearer ' + this.token },
     });
+
+    if (!response.ok) {
+      const message = `Error: ${response.status}. ${response.statusText}`;
+      throw new Error(message);
+    }
     const updatedFilm = await response.json();
 
     return updatedFilm as Terminal;
+  }
+
+  async delete(id: Terminal['id']): Promise<boolean> {
+    const response = await fetch(this.url + '/' + id, {
+      method: 'DELETE',
+      headers: { Authorization: 'Bearer ' + this.token },
+    });
+    if (!response.ok) {
+      const message = `Error: ${response.status}. ${response.statusText}`;
+      throw new Error(message);
+    }
+    return response.ok;
   }
 }

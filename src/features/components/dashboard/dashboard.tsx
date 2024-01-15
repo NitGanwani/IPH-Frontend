@@ -12,8 +12,8 @@ export function Dashboard() {
 
   return (
     <>
-      <h1>Terminals</h1>
-      <Row>
+      <h1 className="text-center m-3">Terminals</h1>
+      <Row className="mx-4">
         {terminals &&
           terminals.map((terminal) => (
             <Col key={terminal.id} sm={12} md={6} lg={4} xl={3}>

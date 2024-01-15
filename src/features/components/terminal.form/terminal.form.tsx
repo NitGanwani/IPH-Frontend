@@ -4,19 +4,20 @@ import { useNavigate, useParams } from 'react-router-dom';
 import FormContainer from '../form/form';
 import { Col, Row, Form, Button } from 'react-bootstrap';
 import { useGroups } from '../../hooks/use.groups';
+import { Terminal } from '../../models/terminal';
 
 export default function TerminalForm() {
   const navigate = useNavigate();
+  const { id } = useParams();
+
   const {
     handleCreateTerminal,
     handleUpdateTerminal,
-    terminals,
     handleLoadTerminals,
+    terminals,
   } = useTerminals();
 
   const { groups, handleLoadGroups } = useGroups();
-
-  const { id } = useParams();
 
   const [terminalData, setTerminalData] = useState({
     name: '',
@@ -32,19 +33,27 @@ export default function TerminalForm() {
 
   useEffect(() => {
     if (id) {
-      const existingTerminal = terminals.find((terminal) => terminal.id === id);
+      const existingTerminal: Terminal = terminals.find(
+        (terminal) => terminal.id === id
+      ) as Terminal;
       if (!existingTerminal) {
         handleLoadTerminals();
       }
 
       if (existingTerminal) {
-        setTerminalData({
-          name: existingTerminal.name,
-          battery: existingTerminal.battery.toString(),
-          wifi: existingTerminal.wifi,
-          isConnected: existingTerminal.isConnected ? 'yes' : 'no',
-          group: existingTerminal.group,
-        });
+        const form = document.querySelector(
+          '.terminal-form'
+        ) as HTMLFormElement;
+        (form.elements.namedItem('name') as HTMLInputElement).value =
+          existingTerminal.name;
+        (form.elements.namedItem('battery') as HTMLSelectElement).value =
+          existingTerminal.battery.toString();
+        (form.elements.namedItem('wifi') as HTMLSelectElement).value =
+          existingTerminal.wifi;
+        (form.elements.namedItem('isConnected') as HTMLSelectElement).value =
+          existingTerminal.isConnected;
+        (form.elements.namedItem('group') as HTMLSelectElement).value =
+          existingTerminal.group.name;
       }
     }
   }, [id, terminals, handleLoadTerminals]);
@@ -53,17 +62,17 @@ export default function TerminalForm() {
     event.preventDefault();
 
     const terminalForm = event.target as HTMLFormElement;
-    const terminalDataWithGroupId = new FormData(terminalForm);
 
-    terminalDataWithGroupId.append('groupId', terminalData.group);
+    const terminalData = new FormData(terminalForm);
 
     if (id) {
-      await handleUpdateTerminal(id, terminalDataWithGroupId);
+      await handleUpdateTerminal(id, terminalData);
     } else {
-      await handleCreateTerminal(terminalDataWithGroupId);
+      await handleCreateTerminal(terminalData);
     }
 
     navigate('/dashboard');
+    terminalForm.reset();
   };
 
   return (

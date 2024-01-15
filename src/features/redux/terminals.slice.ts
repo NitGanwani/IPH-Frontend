@@ -14,7 +14,7 @@ const initialState: TerminalsState = {
 export const loadTerminalsAsync = createAsyncThunk<
   Terminal[],
   GetTerminalPayload
->('load', async ({ repo }) => {
+>('terminals/load', async ({ repo }) => {
   const terminals = await repo.getAll();
 
   return terminals;
@@ -23,7 +23,7 @@ export const loadTerminalsAsync = createAsyncThunk<
 export const createTerminalAsync = createAsyncThunk<
   Terminal,
   { repo: TerminalRepository; terminal: FormData }
->('create', async ({ repo, terminal }) => {
+>('terminals/create', async ({ repo, terminal }) => {
   const result = await repo.create(terminal);
   return result;
 });
@@ -31,8 +31,16 @@ export const createTerminalAsync = createAsyncThunk<
 export const updateTerminalAsync = createAsyncThunk<
   Terminal,
   { repo: TerminalRepository; id: Terminal['id']; terminal: FormData }
->('films/update', async ({ repo, id, terminal }) => {
+>('terminals/update', async ({ repo, id, terminal }) => {
   return await repo.update(id, terminal);
+});
+
+export const deleteTerminalAsync = createAsyncThunk<
+  string,
+  { repo: TerminalRepository; id: Terminal['id'] }
+>('terminals/delete', async ({ repo, id }) => {
+  const response = await repo.delete(id);
+  return response ? id : '';
 });
 
 const terminalsSlice = createSlice({
@@ -51,9 +59,13 @@ const terminalsSlice = createSlice({
     }));
     builder.addCase(updateTerminalAsync.fulfilled, (state, { payload }) => ({
       ...state,
-      films: state.terminals.map((item) =>
+      terminals: state.terminals.map((item) =>
         item.id === payload.id ? payload : item
       ),
+    }));
+    builder.addCase(deleteTerminalAsync.fulfilled, (state, { payload }) => ({
+      ...state,
+      terminals: state.terminals.filter((item) => item.id !== payload),
     }));
   },
 });

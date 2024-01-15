@@ -45,7 +45,7 @@ export function Header() {
                   <LinkContainer to="/admin/userList">
                     <NavDropdown.Item>Users</NavDropdown.Item>
                   </LinkContainer>
-                  <LinkContainer to="/terminal-form">
+                  <LinkContainer to="/create-terminal">
                     <NavDropdown.Item>Terminals</NavDropdown.Item>
                   </LinkContainer>
                   <LinkContainer to="/admin/groups">
