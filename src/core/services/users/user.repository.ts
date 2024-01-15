@@ -6,11 +6,24 @@ export class UserRepository {
 
   async login(item: Partial<User>): Promise<LoginResponse> {
     const response = await fetch(this.url + 'users/login', {
-      method: 'PATCH',
+      method: 'POST',
       body: JSON.stringify(item),
       headers: { 'Content-Type': 'application/json' },
     });
     if (!response.ok) throw new Error('Error in login process');
+    return response.json();
+  }
+
+  async loginWithToken(token: string): Promise<LoginResponse> {
+    const url = this.url + 'users/login';
+    const response = await fetch(url, {
+      method: 'PATCH',
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok)
+      throw new Error(response.status + ' ' + response.statusText);
     return response.json();
   }
 }

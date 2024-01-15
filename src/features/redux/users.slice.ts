@@ -31,6 +31,19 @@ export const loginUserAsync = createAsyncThunk<
   return result;
 });
 
+export const loginTokenThunk = createAsyncThunk<
+  LoginResponse,
+  {
+    token: string;
+    repo: UserRepository;
+    userStore: LocalStorage<{ token: string }>;
+  }
+>('loginWithToken', async ({ token, repo, userStore }) => {
+  const loginResponse = await repo.loginWithToken(token);
+  userStore.set({ token: loginResponse.token });
+  return loginResponse;
+});
+
 const usersSlice = createSlice({
   name: 'users',
   initialState,
@@ -54,6 +67,10 @@ const usersSlice = createSlice({
     });
     builder.addCase(loginUserAsync.rejected, (state) => {
       state.loginLoadState = 'error';
+    });
+    builder.addCase(loginTokenThunk.fulfilled, (state, { payload }) => {
+      state.loggedUser = payload.user;
+      state.token = payload.token;
     });
   },
 });

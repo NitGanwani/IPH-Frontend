@@ -56,9 +56,8 @@ export function Login() {
         showConfirmButton: false,
         padding: '4em 0',
         timer: 2000,
-      }).then(() => {
-        navigate('/login');
       });
+      navigate('/dashboard');
     }
   }, [loginLoadState, navigate]);
 

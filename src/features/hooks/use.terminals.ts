@@ -9,7 +9,7 @@ export function useTerminals() {
   const { terminals } = useSelector((state: RootState) => state.terminals);
 
   const dispatch = useDispatch<AppDispatch>();
-  const repo = new TerminalRepository(url + 'terminals');
+  const repo = new TerminalRepository(url);
 
   const handleLoadTerminals = useCallback(async () => {
     await dispatch(loadTerminalsAsync({ repo }));

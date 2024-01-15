@@ -3,11 +3,11 @@ import { AppDispatch, RootState } from '../../core/store/store';
 import { UserRepository } from '../../core/services/users/user.repository';
 import { LocalStorage } from '../../core/services/local.storage';
 import { url } from '../../config';
-import { ac, loginUserAsync } from '../redux/users.slice';
+import { ac, loginTokenThunk, loginUserAsync } from '../redux/users.slice';
 import { LoginUser } from '../models/user';
 
 export function useUsers() {
-  const { loggedUser, loginLoadState } = useSelector(
+  const { loggedUser, loginLoadState, token } = useSelector(
     (state: RootState) => state.users
   );
 
@@ -19,6 +19,14 @@ export function useUsers() {
     dispatch(loginUserAsync({ loginUser, repo, userStore }));
   };
 
+  const loginWithToken = () => {
+    const userStoreData = userStore.get();
+    if (userStoreData) {
+      const token = userStoreData.token;
+      dispatch(loginTokenThunk({ token, repo, userStore }));
+    }
+  };
+
   const logout = () => {
     dispatch(ac.logout());
     userStore.remove();
@@ -27,7 +35,9 @@ export function useUsers() {
   return {
     login,
     logout,
+    loginWithToken,
     loggedUser,
     loginLoadState,
+    token,
   };
 }

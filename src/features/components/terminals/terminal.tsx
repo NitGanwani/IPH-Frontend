@@ -4,7 +4,7 @@ type PropsType = {
   item: Terminal;
 };
 
-export function Terminal({ item }: PropsType) {
+export function TerminalCard({ item }: PropsType) {
   return (
     <li key={item.id}>
       <span>{item.name}</span>

@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 
 const Login = lazy(() => import('../login/login'));
 const Home = lazy(() => import('../home/home'));
+const Dashboard = lazy(() => import('../dashboard/dashboard'));
 
 export function AppRoutes() {
   return (
@@ -10,6 +11,7 @@ export function AppRoutes() {
       <Routes>
         <Route path="/" element={<Home></Home>}></Route>
         <Route path="/login" element={<Login></Login>}></Route>
+        <Route path="/dashboard" element={<Dashboard></Dashboard>}></Route>
       </Routes>
     </Suspense>
   );
