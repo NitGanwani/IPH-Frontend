@@ -5,6 +5,7 @@ const Login = lazy(() => import('../login/login'));
 const Home = lazy(() => import('../home/home'));
 const Dashboard = lazy(() => import('../dashboard/dashboard'));
 const TerminalForm = lazy(() => import('../terminal.form/terminal.form'));
+const GroupTerminals = lazy(() => import('../group.terminals/group.terminals'));
 
 export function AppRoutes() {
   return (
@@ -20,6 +21,10 @@ export function AppRoutes() {
         <Route
           path="/create-terminal/:id"
           element={<TerminalForm></TerminalForm>}
+        ></Route>
+        <Route
+          path="/group-terminals/:id"
+          element={<GroupTerminals></GroupTerminals>}
         ></Route>
       </Routes>
     </Suspense>
