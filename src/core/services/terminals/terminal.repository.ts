@@ -16,10 +16,16 @@ export class TerminalRepository {
   }
 
   async create(newTerminal: FormData): Promise<Terminal> {
+    const groupId = newTerminal.get('group');
+
     const response = await fetch(this.url, {
       method: 'POST',
-      body: newTerminal,
+      body: JSON.stringify({
+        ...Object.fromEntries(newTerminal),
+        group: groupId,
+      }),
       headers: {
+        'Content-Type': 'application/json',
         Authorization: 'Bearer ' + this.token,
       },
     });

@@ -3,6 +3,7 @@ import { useTerminals } from '../../hooks/use.terminals';
 import { useNavigate, useParams } from 'react-router-dom';
 import FormContainer from '../form/form';
 import { Col, Row, Form, Button } from 'react-bootstrap';
+import { useGroups } from '../../hooks/use.groups';
 
 export default function TerminalForm() {
   const navigate = useNavigate();
@@ -12,15 +13,22 @@ export default function TerminalForm() {
     terminals,
     handleLoadTerminals,
   } = useTerminals();
+
+  const { groups, handleLoadGroups } = useGroups();
+
   const { id } = useParams();
 
   const [terminalData, setTerminalData] = useState({
     name: '',
     battery: '0',
-    wifiLevel: 'low',
+    wifi: 'low',
     isConnected: 'yes',
     group: '',
   });
+
+  useEffect(() => {
+    handleLoadGroups();
+  }, []);
 
   useEffect(() => {
     if (id) {
@@ -33,9 +41,9 @@ export default function TerminalForm() {
         setTerminalData({
           name: existingTerminal.name,
           battery: existingTerminal.battery.toString(),
-          wifiLevel: existingTerminal.wifi,
+          wifi: existingTerminal.wifi,
           isConnected: existingTerminal.isConnected ? 'yes' : 'no',
-          group: existingTerminal.group.id,
+          group: existingTerminal.group,
         });
       }
     }
@@ -44,13 +52,15 @@ export default function TerminalForm() {
   const handleSubmit = async (event: SyntheticEvent) => {
     event.preventDefault();
 
+    const terminalForm = event.target as HTMLFormElement;
+    const terminalDataWithGroupId = new FormData(terminalForm);
+
+    terminalDataWithGroupId.append('groupId', terminalData.group);
+
     if (id) {
-      await handleUpdateTerminal(
-        id,
-        new FormData(event.target as HTMLFormElement)
-      );
+      await handleUpdateTerminal(id, terminalDataWithGroupId);
     } else {
-      await handleCreateTerminal(new FormData(event.target as HTMLFormElement));
+      await handleCreateTerminal(terminalDataWithGroupId);
     }
 
     navigate('/dashboard');
@@ -101,16 +111,16 @@ export default function TerminalForm() {
                 ))}
               </Form.Control>
             </Form.Group>
-            <Form.Group controlId="wifiLevel">
+            <Form.Group controlId="wifi">
               <Form.Label>Wifi Level:</Form.Label>
               <Form.Control
                 as="select"
-                name="wifiLevel"
-                value={terminalData.wifiLevel}
+                name="wifi"
+                value={terminalData.wifi}
                 onChange={(e) =>
                   setTerminalData({
                     ...terminalData,
-                    wifiLevel: e.target.value,
+                    wifi: e.target.value,
                   })
                 }
               >
@@ -135,7 +145,23 @@ export default function TerminalForm() {
                 <option value="no">No</option>
               </Form.Control>
             </Form.Group>
-
+            <Form.Group controlId="group">
+              <Form.Label>Choose your group:</Form.Label>
+              <Form.Control
+                as="select"
+                name="group"
+                value={terminalData.group}
+                onChange={(e) =>
+                  setTerminalData({ ...terminalData, group: e.target.value })
+                }
+              >
+                {groups.map((group) => (
+                  <option key={group.id} value={group.id}>
+                    {group.name}
+                  </option>
+                ))}
+              </Form.Control>
+            </Form.Group>
             <Button type="submit">{id ? 'Save Changes' : 'Submit'}</Button>
           </Form>
         </Col>
