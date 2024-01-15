@@ -38,7 +38,7 @@ export const loginTokenThunk = createAsyncThunk<
     repo: UserRepository;
     userStore: LocalStorage<{ token: string }>;
   }
->('loginWithToken', async ({ token, repo, userStore }) => {
+>('users/loginWithToken', async ({ token, repo, userStore }) => {
   const loginResponse = await repo.loginWithToken(token);
   userStore.set({ token: loginResponse.token });
   return loginResponse;
