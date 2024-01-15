@@ -20,7 +20,7 @@ export function TerminalCard({ item }: PropsType) {
           <br />
           <strong>Wifi Level:</strong> {item.wifi}
           <br />
-          <strong>Is Connected:</strong> {item.isConnected ? 'Yes' : 'No'}
+          <strong>Is Connected:</strong> {item.isConnected}
           <br />
           <strong>Group:</strong> {item.group.name}
         </Card.Text>

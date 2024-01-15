@@ -5,6 +5,6 @@ export type Terminal = {
   name: string;
   battery: number;
   wifi: 'low' | 'medium' | 'high';
-  isConnected: 'yes' | 'no';
+  isConnected: 'Yes' | 'No';
   group: Group;
 };

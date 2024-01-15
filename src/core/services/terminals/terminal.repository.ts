@@ -37,7 +37,7 @@ export class TerminalRepository {
   }
 
   async update(id: Terminal['id'], item: FormData): Promise<Terminal> {
-    const response = await fetch(this.url + id, {
+    const response = await fetch(this.url + '/' + id, {
       method: 'PATCH',
       body: item,
       headers: { Authorization: 'Bearer ' + this.token },
