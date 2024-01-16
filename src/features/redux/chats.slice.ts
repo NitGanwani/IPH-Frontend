@@ -19,7 +19,7 @@ export const loadChatsAsync = createAsyncThunk<Chat[], GetChatPayload>(
 );
 
 const chatsSlice = createSlice({
-  name: 'groups',
+  name: 'chats',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
