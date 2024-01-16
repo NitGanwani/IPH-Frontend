@@ -6,7 +6,7 @@ export function Home() {
   const { loggedUser } = useUsers();
 
   return (
-    <Container className="text-center mt-4">
+    <Container className="text-center mt-4 flex-grow-1">
       <Card>
         <Card.Body>
           <Card.Title>Welcome to the IPH Terminals App</Card.Title>

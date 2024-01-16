@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useGroups } from '../../hooks/use.groups';
 import { useTerminals } from '../../hooks/use.terminals';
 import { useEffect } from 'react';
@@ -29,14 +29,21 @@ export function GroupTerminals() {
 
   return (
     <>
-      <h1 className="text-center m-3">{selectedGroup.name} Terminals</h1>
-      <Row className="mx-4">
-        {groupTerminals.map((terminal) => (
-          <Col key={terminal.id} sm={12} md={6} lg={4} xl={3}>
-            <TerminalCard key={terminal.id} item={terminal} />
-          </Col>
-        ))}
-      </Row>
+      <div className="flex-grow-1">
+        <h1 className="text-center m-3">{selectedGroup.name} Terminals</h1>
+        <div className="d-flex justify-content-center">
+          <Link to="/dashboard" className="btn btn-dark my-3 mx-2">
+            Go Back
+          </Link>
+        </div>
+        <Row className="mx-4">
+          {groupTerminals.map((terminal) => (
+            <Col key={terminal.id} sm={12} md={6} lg={4} xl={3}>
+              <TerminalCard key={terminal.id} item={terminal} />
+            </Col>
+          ))}
+        </Row>
+      </div>
     </>
   );
 }

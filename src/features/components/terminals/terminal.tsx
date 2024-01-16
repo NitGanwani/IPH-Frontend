@@ -1,4 +1,4 @@
-import { Button, Card } from 'react-bootstrap';
+import { Button, Card, ProgressBar } from 'react-bootstrap';
 import { Terminal } from '../../models/terminal';
 import { Link } from 'react-router-dom';
 import { useTerminals } from '../../hooks/use.terminals';
@@ -13,12 +13,27 @@ export function TerminalCard({ item }: PropsType) {
   const { handleDeleteTerminal } = useTerminals();
   const { loggedUser } = useUsers();
 
+  const getProgressBarVariant = (battery: number): string => {
+    if (battery <= 33) {
+      return 'danger';
+    } else if (battery <= 66) {
+      return 'warning';
+    } else {
+      return 'success';
+    }
+  };
+
   return (
     <Card className={style.card}>
       <Card.Body className="text-center">
         <Card.Title>{item.name}</Card.Title>
         <Card.Text>
-          <strong>Battery:</strong> {item.battery}%
+          <ProgressBar
+            now={item.battery}
+            label={`${item.battery}%`}
+            variant={getProgressBarVariant(item.battery)}
+            className="mt-3"
+          />
           <br />
           <strong>Wifi Level:</strong> {item.wifi}
           <br />

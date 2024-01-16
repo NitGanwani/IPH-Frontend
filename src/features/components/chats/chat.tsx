@@ -1,6 +1,7 @@
 import { Card } from 'react-bootstrap';
 import { Chat } from '../../models/chat';
 import { RxCheck, RxCross2 } from 'react-icons/rx';
+import style from './chat.module.scss';
 
 type PropsType = {
   item: Chat;
@@ -8,7 +9,7 @@ type PropsType = {
 
 export function ChatCard({ item }: PropsType) {
   return (
-    <Card>
+    <Card className={style.card}>
       <Card.Body className="text-center">
         <Card.Title>{item.name}</Card.Title>
         <Card.Text>
