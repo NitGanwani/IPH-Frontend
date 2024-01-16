@@ -4,7 +4,7 @@ export type Terminal = {
   id: string;
   name: string;
   battery: number;
-  wifi: 'low' | 'medium' | 'high';
+  wifi: 'Low' | 'Medium' | 'High';
   isConnected: 'Yes' | 'No';
   group: Group;
 };

@@ -41,18 +41,9 @@ export function Header() {
                 </NavDropdown>
               )}
               {loggedUser && loggedUser.role === 'Admin' && (
-                <NavDropdown title="Admin" id="adminmenu">
-                  <LinkContainer to="/admin/userList">
-                    <NavDropdown.Item>Users</NavDropdown.Item>
-                  </LinkContainer>
+                <NavDropdown title="Admin Options" id="adminmenu">
                   <LinkContainer to="/create-terminal">
-                    <NavDropdown.Item>Terminals</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/groups">
-                    <NavDropdown.Item>Groups</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/groups">
-                    <NavDropdown.Item>Groups</NavDropdown.Item>
+                    <NavDropdown.Item>Create new terminal</NavDropdown.Item>
                   </LinkContainer>
                 </NavDropdown>
               )}

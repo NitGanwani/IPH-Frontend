@@ -53,7 +53,7 @@ export default function TerminalForm() {
         (form.elements.namedItem('isConnected') as HTMLSelectElement).value =
           existingTerminal.isConnected;
         (form.elements.namedItem('group') as HTMLSelectElement).value =
-          existingTerminal.group.name;
+          existingTerminal.group.id;
       }
     }
   }, [id, terminals, handleLoadTerminals]);
@@ -72,7 +72,6 @@ export default function TerminalForm() {
     }
 
     navigate('/dashboard');
-    terminalForm.reset();
   };
 
   return (
@@ -96,7 +95,7 @@ export default function TerminalForm() {
                 <Form.Label>Name:</Form.Label>
                 <Form.Control
                   type="text"
-                  placeholder="ex. iphone3"
+                  placeholder="Name of the terminal"
                   name="name"
                   value={terminalData.name}
                   onChange={(e) =>
@@ -137,12 +136,13 @@ export default function TerminalForm() {
                     })
                   }
                 >
-                  <option value="low">Low</option>
-                  <option value="high">High</option>
+                  <option value="Low">Low</option>
+                  <option value="Medium">Medium</option>
+                  <option value="High">High</option>
                 </Form.Control>
               </Form.Group>
               <Form.Group controlId="isConnected">
-                <Form.Label>Is Connected:</Form.Label>
+                <Form.Label>Terminal Connected:</Form.Label>
                 <Form.Control
                   as="select"
                   name="isConnected"
@@ -154,8 +154,8 @@ export default function TerminalForm() {
                     })
                   }
                 >
-                  <option value="yes">Yes</option>
-                  <option value="no">No</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
                 </Form.Control>
               </Form.Group>
               <Form.Group controlId="group">

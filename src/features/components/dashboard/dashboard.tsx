@@ -4,14 +4,18 @@ import { TerminalCard } from '../terminals/terminal';
 import { useEffect } from 'react';
 import { GroupCard } from '../groups/group';
 import { useGroups } from '../../hooks/use.groups';
+import { useChats } from '../../hooks/use.chats';
+import { ChatCard } from '../chats/chat';
 
 export function Dashboard() {
   const { groups, handleLoadGroups } = useGroups();
   const { terminals, handleLoadTerminals } = useTerminals();
+  const { chats, handleLoadChats } = useChats();
 
   useEffect(() => {
     handleLoadTerminals();
     handleLoadGroups();
+    handleLoadChats();
   }, []);
 
   return (
@@ -34,6 +38,18 @@ export function Dashboard() {
               <TerminalCard item={terminal} />
             </Col>
           ))}
+      </Row>
+
+      <h1 className="text-center m-3">Chats</h1>
+      <Row className="mx-4">
+        <div className="d-flex justify-content-center">
+          {chats &&
+            chats.map((chat) => (
+              <Col key={chat.id} sm={12} md={6} lg={4} xl={3}>
+                <ChatCard item={chat} />
+              </Col>
+            ))}
+        </div>
       </Row>
     </>
   );

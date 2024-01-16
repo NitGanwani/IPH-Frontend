@@ -37,19 +37,27 @@ export class TerminalRepository {
   }
 
   async update(id: Terminal['id'], item: FormData): Promise<Terminal> {
+    const groupId = item.get('group');
     const response = await fetch(this.url + '/' + id, {
       method: 'PATCH',
-      body: item,
-      headers: { Authorization: 'Bearer ' + this.token },
+      body: JSON.stringify({
+        ...Object.fromEntries(item),
+        group: groupId,
+      }),
+
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + this.token,
+      },
     });
 
     if (!response.ok) {
       const message = `Error: ${response.status}. ${response.statusText}`;
       throw new Error(message);
     }
-    const updatedFilm = await response.json();
+    const updatedTerminal = await response.json();
 
-    return updatedFilm as Terminal;
+    return updatedTerminal as Terminal;
   }
 
   async delete(id: Terminal['id']): Promise<boolean> {
