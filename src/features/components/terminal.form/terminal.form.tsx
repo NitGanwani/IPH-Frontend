@@ -5,6 +5,7 @@ import FormContainer from '../form/form';
 import { Col, Row, Form, Button } from 'react-bootstrap';
 import { useGroups } from '../../hooks/use.groups';
 import { Terminal } from '../../models/terminal';
+import Swal from 'sweetalert2';
 
 export default function TerminalForm() {
   const navigate = useNavigate();
@@ -67,8 +68,28 @@ export default function TerminalForm() {
 
     if (id) {
       await handleUpdateTerminal(id, terminalData);
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'TERMINAL UPDATED',
+        background:
+          'linear-gradient(to right, rgba(20, 20, 20), rgba(0, 0, 0))',
+        color: 'white',
+        showConfirmButton: false,
+        timer: 2000,
+      });
     } else {
       await handleCreateTerminal(terminalData);
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'TERMINAL CREATED',
+        background:
+          'linear-gradient(to right, rgba(20, 20, 20), rgba(0, 0, 0))',
+        color: 'white',
+        showConfirmButton: false,
+        timer: 2000,
+      });
     }
 
     navigate('/dashboard');
@@ -94,6 +115,7 @@ export default function TerminalForm() {
               <Form.Group controlId="name">
                 <Form.Label>Name:</Form.Label>
                 <Form.Control
+                  required
                   type="text"
                   placeholder="Name of the terminal"
                   name="name"
@@ -106,6 +128,7 @@ export default function TerminalForm() {
               <Form.Group controlId="battery">
                 <Form.Label>Battery:</Form.Label>
                 <Form.Control
+                  required
                   as="select"
                   name="battery"
                   value={terminalData.battery}
@@ -126,6 +149,7 @@ export default function TerminalForm() {
               <Form.Group controlId="wifi">
                 <Form.Label>Wifi Level:</Form.Label>
                 <Form.Control
+                  required
                   as="select"
                   name="wifi"
                   value={terminalData.wifi}
@@ -144,6 +168,7 @@ export default function TerminalForm() {
               <Form.Group controlId="isConnected">
                 <Form.Label>Terminal Connected:</Form.Label>
                 <Form.Control
+                  required
                   as="select"
                   name="isConnected"
                   value={terminalData.isConnected}

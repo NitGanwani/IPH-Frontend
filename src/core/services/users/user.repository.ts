@@ -26,4 +26,13 @@ export class UserRepository {
       throw new Error(response.status + ' ' + response.statusText);
     return response.json();
   }
+
+  async register(item: Partial<User>): Promise<User> {
+    const response = await fetch(this.url + 'users/register', {
+      method: 'POST',
+      body: JSON.stringify(item),
+      headers: { 'Content-Type': 'application/json' },
+    });
+    return response.json() as Promise<User>;
+  }
 }

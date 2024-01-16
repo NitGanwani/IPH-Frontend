@@ -1,38 +1,36 @@
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { Button, Form } from 'react-bootstrap';
 import FormContainer from '../form/form';
-import { Form, Button, Row, Col } from 'react-bootstrap';
 import { useUsers } from '../../hooks/use.users';
+import { useNavigate } from 'react-router-dom';
+import { SyntheticEvent, useState } from 'react';
 import Swal from 'sweetalert2';
-import { LoginUser } from '../../models/user';
-import { Link, redirect, useNavigate } from 'react-router-dom';
+import { User } from '../../models/user';
 
-export function Login() {
+export function Register() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const { handleRegisterUser } = useUsers();
   const navigate = useNavigate();
 
-  const { login, loginLoadState } = useUsers();
-
-  const handleSubmit = async (event: SyntheticEvent) => {
+  const handleSubmit = (event: SyntheticEvent) => {
     event.preventDefault();
-    const element = event.target as HTMLFormElement;
-    const loginUSer: LoginUser = {
-      email: (element.elements.namedItem('email') as HTMLInputElement).value,
-      password: (element.elements.namedItem('password') as HTMLInputElement)
+    const formElement = event.target as HTMLFormElement;
+    const data = {
+      name: (formElement.elements.namedItem('name') as HTMLInputElement).value,
+      email: (formElement.elements.namedItem('email') as HTMLInputElement)
         .value,
-    };
-    await login(loginUSer);
-    element.reset();
-  };
+      password: (formElement.elements.namedItem('password') as HTMLInputElement)
+        .value,
+    } as Partial<User>;
 
-  useEffect(() => {
-    if (loginLoadState === 'error') {
+    if (data.name === '' || data.email === '' || data.password === '') {
       Swal.fire({
         width: '20em',
         icon: 'error',
-        title: 'ERROR',
-        text: 'INVALID USERNAME OR PASSWORD',
+        title: 'REGISTER ERROR',
+        text: 'Try again please',
         background:
           'linear-gradient(to right, rgba(20, 20, 20), rgba(0, 0, 0))',
         color: 'white',
@@ -41,14 +39,13 @@ export function Login() {
         padding: '4em 0',
         timer: 2000,
       });
-      return;
-    }
-    if (loginLoadState === 'success') {
+    } else {
+      handleRegisterUser(data);
       Swal.fire({
         width: '20em',
         icon: 'success',
-        title: 'LOGIN SUCCESS!',
-        text: 'Redirecting to the dashboard',
+        title: 'WELCOME TO IPH DASHBOARD',
+        text: 'Redirecting to login process',
         background:
           'linear-gradient(to right, rgba(20, 20, 20), rgba(0, 0, 0))',
         color: 'white',
@@ -57,17 +54,29 @@ export function Login() {
         padding: '4em 0',
         timer: 2000,
       });
-      navigate('/dashboard');
+      formElement.reset();
+      navigate('/login');
     }
-  }, [loginLoadState, navigate]);
+  };
 
   return (
     <FormContainer>
-      <h1>Sign In</h1>
+      <h1>Sign Up</h1>
       <Form onSubmit={handleSubmit}>
+        <Form.Group controlId="name" className="my-3">
+          <Form.Label>Name</Form.Label>
+          <Form.Control
+            required
+            type="text"
+            placeholder="Enter your name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          ></Form.Control>
+        </Form.Group>
         <Form.Group controlId="email" className="my-3">
           <Form.Label>Email Address</Form.Label>
           <Form.Control
+            required
             type="email"
             placeholder="Enter email"
             value={email}
@@ -77,6 +86,7 @@ export function Login() {
         <Form.Group controlId="password" className="my-3">
           <Form.Label>Password</Form.Label>
           <Form.Control
+            required
             type="password"
             placeholder="Enter password"
             value={password}
@@ -87,19 +97,8 @@ export function Login() {
           Sign In
         </Button>
       </Form>
-      <Row className="py-3">
-        <Col>
-          New User?{' '}
-          <Link
-            to={redirect ? `/register?redirect=${redirect}` : '/register'}
-            className="text-decoration-none"
-          >
-            Register
-          </Link>
-        </Col>
-      </Row>
     </FormContainer>
   );
 }
 
-export default Login;
+export default Register;

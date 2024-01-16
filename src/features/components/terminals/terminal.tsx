@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useTerminals } from '../../hooks/use.terminals';
 import style from './terminal.module.scss';
 import { useUsers } from '../../hooks/use.users';
+import Swal from 'sweetalert2';
 
 type PropsType = {
   item: Terminal;
@@ -12,6 +13,20 @@ type PropsType = {
 export function TerminalCard({ item }: PropsType) {
   const { handleDeleteTerminal } = useTerminals();
   const { loggedUser } = useUsers();
+
+  const handleDelete = (id: string) => {
+    handleDeleteTerminal(id);
+    Swal.fire({
+      position: 'top-end',
+      icon: 'info',
+      title: 'TERMINAL DELETED',
+      background: 'linear-gradient(to right, rgba(20, 20, 20), rgba(0, 0, 0))',
+      color: 'white',
+      iconColor: 'red',
+      showConfirmButton: false,
+      timer: 2000,
+    });
+  };
 
   const getProgressBarVariant = (battery: number): string => {
     if (battery <= 33) {
@@ -28,6 +43,7 @@ export function TerminalCard({ item }: PropsType) {
       <Card.Body className="text-center">
         <Card.Title>{item.name}</Card.Title>
         <Card.Text>
+          <strong>Battery:</strong>
           <ProgressBar
             now={item.battery}
             label={`${item.battery}%`}
@@ -51,7 +67,7 @@ export function TerminalCard({ item }: PropsType) {
             <Button
               variant="danger"
               className="mx-2"
-              onClick={() => handleDeleteTerminal(item.id)}
+              onClick={() => handleDelete(item.id)}
             >
               Delete
             </Button>

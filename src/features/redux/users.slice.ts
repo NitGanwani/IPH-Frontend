@@ -7,12 +7,14 @@ import { LocalStorage } from '../../core/services/local.storage';
 type LoginState = 'idle' | 'logging' | 'error' | 'success';
 
 export type UsersState = {
+  users: User[];
   loggedUser: User | null;
   loginLoadState: LoginState;
   token: string;
 };
 
 const initialState: UsersState = {
+  users: [],
   loggedUser: null,
   loginLoadState: 'idle',
   token: '',
@@ -44,6 +46,13 @@ export const loginTokenThunk = createAsyncThunk<
   return loginResponse;
 });
 
+export const registerUserAsync = createAsyncThunk<
+  User,
+  { repo: UserRepository; user: Partial<User> }
+>('users/register', async ({ repo, user }) => {
+  return await repo.register(user);
+});
+
 const usersSlice = createSlice({
   name: 'users',
   initialState,
@@ -72,6 +81,10 @@ const usersSlice = createSlice({
       state.loggedUser = payload.user;
       state.token = payload.token;
     });
+    builder.addCase(registerUserAsync.fulfilled, (state, { payload }) => ({
+      ...state,
+      users: [...state.users, payload],
+    }));
   },
 });
 
