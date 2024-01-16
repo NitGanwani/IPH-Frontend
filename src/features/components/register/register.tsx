@@ -1,7 +1,7 @@
 import { Button, Form } from 'react-bootstrap';
 import FormContainer from '../form/form';
 import { useUsers } from '../../hooks/use.users';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { SyntheticEvent, useState } from 'react';
 import Swal from 'sweetalert2';
 import { User } from '../../models/user';
@@ -93,9 +93,18 @@ export function Register() {
             onChange={(e) => setPassword(e.target.value)}
           ></Form.Control>
         </Form.Group>
-        <Button type="submit" variant="dark" className="mt-2">
-          Sign In
-        </Button>
+        <div className="d-flex justify-content-center mt-2">
+          <Button
+            type="submit"
+            variant="dark"
+            className="btn btn-dark my-3 mx-2"
+          >
+            Sign Up
+          </Button>
+          <Link to="/" className="btn btn-dark my-3 mx-2">
+            Go Back
+          </Link>
+        </div>
       </Form>
     </FormContainer>
   );
